@@ -1,20 +1,21 @@
 package pkg
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 )
 
-func SortDownloads() error {
+func SortDocuments() error {
 	homeDir, err := os.UserHomeDir()
 
 	if err != nil {
 		return err
 	}
 
-	downloadDir := homeDir + "/Downloads"
+	documentsDir := homeDir + "/Documents"
 
-	files, err := os.ReadDir(downloadDir)
+	files, err := os.ReadDir(documentsDir)
 
 	if err != nil {
 		return err
@@ -23,7 +24,7 @@ func SortDownloads() error {
 	for _, file := range files {
 
 		fileExt := filepath.Ext(file.Name())
-		fileDir := downloadDir + "/" + file.Name()
+		fileDir := documentsDir + "/" + file.Name()
 
 		switch fileExt {
 		case ".mkv", ".mp4":
@@ -33,8 +34,8 @@ func SortDownloads() error {
 			imageDir := homeDir + "/Pictures/" + file.Name()
 			moveFileToNewDir(fileDir, imageDir)
 		default:
-			documentsDir := homeDir + "/Documents/" + file.Name()
-			moveFileToNewDir(fileDir, documentsDir)
+			fmt.Println("Already a document")
+			// Do nothing
 		}
 	}
 

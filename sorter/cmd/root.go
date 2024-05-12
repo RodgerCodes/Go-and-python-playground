@@ -9,7 +9,7 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(sortDownloadsCmd)
+	rootCmd.AddCommand(sortCmd)
 }
 
 func Execute() error {
