@@ -30,6 +30,14 @@ func jsonWrapper() js.Func {
 		if len(args) != 1 {
 			return "Invalid no of arguments passed"
 		}
+		jsDoc := js.Global().Get("document")
+		if !jsDoc.Truthy() {
+			return "Unable to get document object"
+		}
+		jsonOutputTextArea := jsDoc.Call("getElementById", "jsonoutput")
+		if !jsonOutputTextArea.Truthy() {
+			return "Unable to get output text area"
+		}
 		inputJSON := args[0].String()
 		fmt.Printf("input %s\n", inputJSON)
 		pretty, err := prettyJson(inputJSON)
@@ -37,7 +45,8 @@ func jsonWrapper() js.Func {
 			fmt.Printf("unable to convert to json %s\n", err)
 			return err.Error()
 		}
-		return pretty
+		jsonOutputTextArea.Set("value", pretty)
+		return nil
 	})
 	return jsonFunc
 }
